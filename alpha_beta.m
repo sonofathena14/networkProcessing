@@ -7,6 +7,7 @@
 %          alpha = average alpha for whole network 
 %          beta = average beta for whole network
 %          lrr  = length to radius ratio
+
 function [alphaVec, betaVec, rad_alphabetaVec, lrrVec, rad_lrr, node_details, alpha, beta, lrr, Connection]=alpha_beta(newNetwork, nodes)
 A=[];
 B=[];
