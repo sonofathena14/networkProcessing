@@ -8,7 +8,7 @@ function [T] = Export_to_Excel(details,Extraction,FN,Name)
 % and xyz components because VMTK works backwards from the outlets to the
 % inlet(s).
 
-excelname = strcat('EXPORT_',FN,'.xlsx');
+excelname = strcat('Output/EXPORT_',FN,'.xlsx');
      
 for i = 2:length(details(:,1))
     if (mod(i,100) == 0) disp([i]); end

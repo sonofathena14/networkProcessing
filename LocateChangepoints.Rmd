@@ -17,8 +17,8 @@ library(openxlsx)
 ```
 ```{r, include = FALSE}
 source("GlobalFunctions.R")
-data = LargeExcel("EXPORT_PVB046_arteries.xlsx")
-FindChangepoints(data, q=2, plot = TRUE, 'IMPORT_PVB046_arteries.xlsx')
+data = LargeExcel("./Output/EXPORT_PVB046.xlsx")
+FindChangepoints(data, q=2, plot = TRUE, 'IMPORT_PVB046.xlsx')
 ```
 
 

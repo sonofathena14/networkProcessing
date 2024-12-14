@@ -14,7 +14,7 @@ x = input(prompt);
 
 [path, arcsC, nodesC, correction_log]=correctionEngine(arcs,nodes,x);
 [path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path);
-%plotSlicerData(arcsC2,nodesC2,'b',3);
+plotSlicerData(arcsC2,nodesC2,'b',3);
 [path3,arcsC3,nodesC3] = blobRemover(nodesC2,arcsC2,path2);
 plotSlicerData(arcsC3,nodesC3,'b',4);
 
@@ -24,6 +24,6 @@ plotSlicerData(arcsC3,nodesC3,'b',4);
 
 [T] = Export_to_Excel(vessel_details,0,Name,'Aorta');
 
-save(strcat('Segmentation_',Name,'.mat'));
+save(strcat('Output/Segmentation_',Name,'.mat'));
 disp('Now run the R-code, input the correct Excel file name');
 end

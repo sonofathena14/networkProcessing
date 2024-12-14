@@ -1,7 +1,7 @@
 function [new_vessel_details,Data,newNetwork,DataOut] = Run_get_radii_part2(Name,TaperVes,Scale,ploton)
-    sM = strcat('Segmentation_',Name,'.mat');
-    sE = strcat('IMPORT_',Name,'.xlsx');
-    sO = strcat('FluidInput_',Name,'.mat');
+    sM = strcat('./Output/Segmentation_',Name,'.mat');
+    sE = strcat('./Input/IMPORT_',Name,'.xlsx');
+    sO = strcat('./FluidsInput/FluidInput_',Name,'.mat');
 
     load(sM,'maxDaughters','vessel_details','newNetwork','arcsC2','nodesC');
     
