@@ -17,7 +17,6 @@
 % "findNearestPoints"
 
 function [path,arcs,nodes]=blobRemover(nodes_old,arcs_old,path_old)
-ans1=input('Do you need to remove any blobs?','s');
 BR = 0;
 segments=zeros(length(arcs_old),3); %extacts VES ID and the input/output nodes
 for i=1:length(arcs_old)
@@ -72,77 +71,66 @@ for i=1:num_duplicate_vessels
 end
 arcs_old=arcs_old(~cellfun('isempty',arcs_old));
 nodes_old( ~any(nodes_old,2), : ) = [];
-%If no blob needs to be removed, return original network, with dups removed
-if ans1 ~= 'Y'
-    path = path_old;
-    arcs = arcs_old;
-    nodes = nodes_old;
-end
+
 %% Remove blobs
-if ans1=='Y'
-    STILL_GOING='Y';
-    while STILL_GOING=='Y'
-        node1=input('Input node of blob to remove: '); %Node closest to root
-        node2=input('Output node of blob to remove: '); %node on other side of blob
-        segments=zeros(length(arcs_old),3); %Redefine vessels
-        for i=1:length(arcs_old)
-            segments(i,1)=i;
-            segments(i,2)=arcs_old{1,i}(1,1);
-            segments(i,3)=arcs_old{1,i}(1,2);
+node1=input('Input node of blob to remove: '); %Node closest to root
+node2=input('Output node of blob to remove: '); %node on other side of blob
+segments=zeros(length(arcs_old),3); %Redefine vessels
+for i=1:length(arcs_old)
+    segments(i,1)=i;
+    segments(i,2)=arcs_old{1,i}(1,1);
+    segments(i,3)=arcs_old{1,i}(1,2);
+end
+[~, spath] = dijkstra(nodes_old,segments,node1,node2); %use dijkstra to identify the shortest path through blob
+%disp(spath)
+nearest_nodes = findNearestPoints(nodes_old); %identify all nodes in blob (within x voxels from center node)
+%disp(nearest_nodes)
+nodes_to_remove = nearest_nodes(~ismember(nearest_nodes,spath)); %if the node is off path, store to remove it
+%disp(nodes_to_remove)
+vessels_to_remove = [];
+% remove vessels connected to one of the nodes that need to be removed
+for i=1:length(nodes_to_remove) %cycle each node to be removed
+    node1 = nodes_to_remove(i);
+    for j=1:length(nearest_nodes) %cycle every node
+        node2 = nearest_nodes(j);
+        if node1 == node2
+            continue
         end
-        [~, spath] = dijkstra(nodes_old,segments,node1,node2); %use dijkstra to identify the shortest path through blob
-        %disp(spath)
-        nearest_nodes = findNearestPoints(nodes_old); %identify all nodes in blob (within x voxels from center node)
-        %disp(nearest_nodes)
-        nodes_to_remove = nearest_nodes(~ismember(nearest_nodes,spath)); %if the node is off path, store to remove it
-        %disp(nodes_to_remove)
-        vessels_to_remove = [];
-        % remove vessels connected to one of the nodes that need to be removed
-        for i=1:length(nodes_to_remove) %cycle each node to be removed
-            node1 = nodes_to_remove(i);
-            for j=1:length(nearest_nodes) %cycle every node
-                node2 = nearest_nodes(j);
-                if node1 == node2
-                    continue
-                end
-                for x=1:length(segments) %search vessels for 
-                    if node1==segments(x,2) && node2 == segments(x,3)
-                        vessels_to_remove = [vessels_to_remove; x];
-                        break
-                    end
-                    if node1==segments(x,3) && node2 == segments(x,2)
-                        vessels_to_remove = [vessels_to_remove; x];
-                        break
-                    end
-                end
+        for x=1:length(segments) %search vessels for 
+            if node1==segments(x,2) && node2 == segments(x,3)
+                vessels_to_remove = [vessels_to_remove; x];
+                break
+            end
+            if node1==segments(x,3) && node2 == segments(x,2)
+                vessels_to_remove = [vessels_to_remove; x];
+                break
             end
         end
-        %disp(vessels_to_remove)
-        vessels_to_remove = unique(vessels_to_remove,'rows');
-        %disp(vessels_to_remove)
-        [num_to_remove,~]=size(vessels_to_remove);
-        for i=1:num_to_remove
-            vessel_ind=vessels_to_remove(i,1);
-            node1=arcs_old{1,vessel_ind}(1,1) ;
-            node2=arcs_old{1,vessel_ind}(1,2) ;
-            node_ind1=find(nodes_old(:,1)==node1);
-            node_ind2=find(nodes_old(:,1)==node2);
-            nodes_old(node_ind1,5)=nodes_old(node_ind1,5)-1;
-            nodes_old(node_ind2,5)=nodes_old(node_ind2,5)-1;
-            arcs_old{1,vessel_ind}=[];
-            disp(['Edge from node ', num2str(node1), ' to node ', num2str(node2), ' has been removed.'])
-        end
-        arcs_old=arcs_old(~cellfun('isempty',arcs_old));
-        for i=1:length(nodes_to_remove)
-            node_row = find(nodes_old(:,1)==nodes_to_remove(i));
-            nodes_old(node_row, :)=zeros([1, 5]);
-            disp(['Node ', num2str(nodes_to_remove(i)), ' has been removed.'])
-        end
-        [arcs_old, nodes_old, path_old]=fix_degree_2(arcs_old, nodes_old, path_old);
-        STILL_GOING=input('Do you need to remove another blob?','s');
-        BR = BR+1;
     end
 end
+%disp(vessels_to_remove)
+vessels_to_remove = unique(vessels_to_remove,'rows');
+%disp(vessels_to_remove)
+[num_to_remove,~]=size(vessels_to_remove);
+for i=1:num_to_remove
+    vessel_ind=vessels_to_remove(i,1);
+    node1=arcs_old{1,vessel_ind}(1,1) ;
+    node2=arcs_old{1,vessel_ind}(1,2) ;
+    node_ind1=find(nodes_old(:,1)==node1);
+    node_ind2=find(nodes_old(:,1)==node2);
+    nodes_old(node_ind1,5)=nodes_old(node_ind1,5)-1;
+    nodes_old(node_ind2,5)=nodes_old(node_ind2,5)-1;
+    arcs_old{1,vessel_ind}=[];
+    disp(['Edge from node ', num2str(node1), ' to node ', num2str(node2), ' has been removed.'])
+end
+arcs_old=arcs_old(~cellfun('isempty',arcs_old));
+for i=1:length(nodes_to_remove)
+    node_row = find(nodes_old(:,1)==nodes_to_remove(i));
+    nodes_old(node_row, :)=zeros([1, 5]);
+    disp(['Node ', num2str(nodes_to_remove(i)), ' has been removed.'])
+end
+[arcs_old, nodes_old, path_old]=fix_degree_2(arcs_old, nodes_old, path_old);
+
 arcs = arcs_old;
 nodes = nodes_old;
 path = path_old;

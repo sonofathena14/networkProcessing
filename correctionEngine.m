@@ -17,56 +17,10 @@
 
 function [path, arcs, nodes, correction_log]=correctionEngine(arcs_old,nodes_old,root_nodeID)
 
-% Initialize variables
-vessels_to_remove=[];
-
 FB=0;
 DE=0;
 DP=0;
 SC=0;
-
-%% False branches
-% REMOVE EDGES
-ans1=input('Do you need to remove any edges?','s');
-if ans1 == 'Y'
-    STILL_GOING = 'Y';
-    while STILL_GOING =='Y'
-        vessels_to_remove=input('[node1 node2] of edge to remove: ');
-        node1 = vessels_to_remove(1); node2 = vessels_to_remove(2);
-        for i=1:length(arcs_old)
-            if arcs_old{1,i}(1, 1:2)==vessels_to_remove | arcs_old{1,i}(1, 1:2)==flip(vessels_to_remove)
-                arcs_old{1,i}=[];
-                node1_row=find(nodes_old(:,1)==node1);
-                node2_row=find(nodes_old(:,1)==node2);
-                nodes_old(node1_row, 5)=nodes_old(node1_row, 5)-1;
-                nodes_old(node2_row, 5)=nodes_old(node2_row, 5)-1;
-                disp(['Edge from node ', num2str(node1), ' to node ', num2str(node2), ' has been removed.'])
-                FB=FB+1;
-                break
-            end
-        end
-        STILL_GOING=input('Do you need to remove another edge?','s');
-        arcs_old=arcs_old(~cellfun('isempty',arcs_old));
-    end
-end
-
-% remove any empty cells.
-arcs_old=arcs_old(~cellfun('isempty',arcs_old));
-
-% REMOVE NODES
-ans2=input('Do you need to remove any nodes?','s');
-if ans2 == 'Y'
-    STILL_GOING = 'Y';
-    while STILL_GOING =='Y'
-        node_to_remove = input('nodeID of node to remove: ');
-        node_row = find(nodes_old(:,1)==node_to_remove);
-        nodes_old(node_row, :)=zeros([1, 5]);
-        disp(['Node ', num2str(node_to_remove), ' has been removed.'])
-        STILL_GOING=input('Do you need to remove another node?','s');
-    end
-end
-
-nodes_old( ~any(nodes_old,2), : ) = [];
 
 %% DOUBLE EDGES
 dup_vessels=[];
