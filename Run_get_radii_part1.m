@@ -51,7 +51,7 @@ end
 [orientation,newNetwork,connectivity,arcsC3,maxDaughters,maxParrents] = directedGraphInfo(arcsC2,nodesC2, path2);
 
 [vessel_details] = extract_geometry(newNetwork,connectivity,arcsC3,orientation);
-%save(strcat('Output/Vessels_',Name,'.mat')); %Run if you want to run the Alpha Beta Python Code
+save(strcat('Output/Vessels_',Name,'.mat')); %Run if you want to run the Alpha Beta Python Code
 
 [T] = Export_to_Excel(vessel_details,0,Name,'Aorta');
 
@@ -59,7 +59,7 @@ save(strcat('Output/Segmentation_',Name,'.mat'));
 disp('Now run the R-code, input the correct Excel file name');
 end
 
-% vessels_to_remove=[];
+% vessels_to_rem11ove=[];
 % ans1=input('Do you need to remove any edges?','s');
 % if ans1 == 'Y'
 %     STILL_GOING = 'Y';
