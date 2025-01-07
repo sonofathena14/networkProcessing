@@ -137,12 +137,12 @@ if ans1~='Y'
 end
 if ans1 =='Y'
     node1=input('Input node of blob to remove: '); %Node closest to root
-    nodes = input('[node1 node2] of output: ');
-    node2 = nodes(1); nodes3 = nodes(2);
-    [~, spath] = dijkstra(nodes_old,segments,node1,node2); %use dijkstra to identify the shortest path through blob in one direction
-    [~, spath2] = dijkstra(nodes_old,segments,node1,node3); %use dijkstra to identify the shortest path through blob in other direction
+    nodes = input('[node1 node2] of outputs: ');
+    nodes2 = nodes(1); nodes3 = nodes(2);
+    [~, spath] = dijkstra(nodes_old,segments,node1,nodes2); %use dijkstra to identify the shortest path through blob in one direction
+    [~, path2] = dijkstra(nodes_old,segments,node1,nodes3); %use dijkstra to identify the shortest path through blob in other direction
     nearest_nodes = findNearestPoints(nodes_old); %identify all nodes in blob (within x voxels from center node)
-    nodes_to_remove = nearest_nodes(~ismember(nearest_nodes,spath)&~ismember(nearest_nodes,spath2)); %if the node is off path, store to remove it
+    nodes_to_remove = nearest_nodes(~ismember(nearest_nodes,spath)&~ismember(nearest_nodes,path2)); %if the node is off path, store to remove it
     vessels_to_remove = [];
     % remove vessels connected to one of the nodes that need to be removed
     for i=1:length(nodes_to_remove) %cycle each node to be removed
