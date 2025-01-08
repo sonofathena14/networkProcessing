@@ -6,6 +6,7 @@ s2 = strcat('../',Name,'_SKEL_adj_dmax_isthmus1_p0_REDUCED_sp_c_m.dot');
 s3 = strcat('../',Name,'_DMAP.nrrd');
 
 [arcs,nodes]=formatData(s1,s2,s3);
+[arcs] = OrientArcs(arcs,nodes);
 i=1;
 plotSlicerData(arcs,nodes,'b',i); % If root node is not know run plotSlicerData(arcs,nodes,'b');
 i = i+1;

@@ -35,12 +35,14 @@ for i = 2:height(details)
     % vessel_details_table, and get the radius value and length value at
     % that location
     if ~isempty(cpts)
+        %disp(strcat('I = ',num2str(i)))
         for j = 1:num_cpts
             cpt_x_value  = cpts(j, 1);
             cpt_y_value  = cpts(j, 2);
             cpt_z_value  = cpts(j, 3);
             radii_values = details{i, 2};
             ID = find(radii_values(:,1)==cpt_x_value & radii_values(:,2)==cpt_y_value & radii_values(:,3)==cpt_z_value);
+            %disp(j)
             cpt_radii  (j, 1) = radii_values(ID,4);
             cpt_lengths(j, 1) = radii_values(ID,5);
         end
