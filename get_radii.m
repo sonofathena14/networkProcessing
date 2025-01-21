@@ -37,7 +37,7 @@ for i = 2:num_vessels
         set(gca,'fontsize',16)
         xlabel('Length (cm)');
         ylabel('Radius (cm)');
-    end;
+    end
     if isempty(cpt_info{i, 2})
         radii_between  = radius_info;
         length_between = length_info;
