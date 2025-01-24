@@ -59,21 +59,3 @@ save(strcat('Output/Vessels_',Name,'.mat')); %Run if you want to run the Alpha B
 save(strcat('Output/Segmentation_',Name,'.mat'));
 disp('Now run the R-code, input the correct Excel file name');
 end
-
-% vessels_to_rem11ove=[];
-% ans1=input('Do you need to remove any edges?','s');
-% if ans1 == 'Y'
-%     STILL_GOING = 'Y';
-%     while STILL_GOING =='Y'
-%         STILL_GOING=input('Do you need to remove another edge?','s');
-%     end
-% end
-
-% ans2=input('Do you need to remove any nodes?','s');
-% if ans2 == 'Y'
-%     STILL_GOING = 'Y';
-%     while STILL_GOING =='Y'
-%         
-%         STILL_GOING=input('Do you need to remove another node?','s');
-%     end
-% end
