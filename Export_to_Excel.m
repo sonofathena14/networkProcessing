@@ -9,7 +9,8 @@ function [T] = Export_to_Excel(details,Extraction,FN,Name)
 % inlet(s).
 
 excelname = strcat('Output/EXPORT_',FN,'.xlsx');
-     
+recycle on % Send to recycle bin instead of permanently deleting.
+delete(excelname); % Delete (send to recycle bin).     
 for i = 2:length(details(:,1))
     if (mod(i,100) == 0) disp([i]); end
     if Extraction == 1 % Flip radii

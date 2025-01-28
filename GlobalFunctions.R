@@ -125,5 +125,5 @@ FindChangepoints = function(data, q, plot,name){suppressWarnings({
         
       }
   }})
-  write.xlsx(data,name,sheetname = names(data))
+  write.xlsx(data,name,sheetname = names(data),overwrite=TRUE)
 }
