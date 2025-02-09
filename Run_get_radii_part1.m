@@ -54,6 +54,7 @@ plotSlicerData_lines(arcsC2, nodesC2, 'b',i)
 [orientation,newNetwork,connectivity,arcsC3,maxDaughters,maxParrents] = directedGraphInfo(arcsC2,nodesC2, path2);
 
 [vessel_details] = extract_geometry(newNetwork,connectivity,arcsC3,orientation);
+save(strcat('Output/Vessels_',Name,'.mat'));
 
 [T] = Export_to_Excel(vessel_details,0,Name,'Aorta');
 

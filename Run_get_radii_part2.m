@@ -13,9 +13,10 @@ function [new_vessel_details,Data,newNetwork] = Run_get_radii_part2(Name,TaperVe
     [new_vessel_details] = Import_from_excel(sE,vessel_details);
     
     changepoint_location=get_changepoint_locations(new_vessel_details);
-
+    save(strcat('FluidsInput/Changepoint_',Name,'.mat'))
+    
     vessel_radii=get_radii(new_vessel_details, changepoint_location,TaperVes,Scale,ploton);
 
     Data = CreateFluidsCodeInput(vessel_radii,new_vessel_details,maxDaughters);
-    save(sO,'Data');
+    save(sO,'Data','new_vessel_details');
 end
