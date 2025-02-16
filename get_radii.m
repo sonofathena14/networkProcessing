@@ -15,6 +15,8 @@ vessel_radii{1, 6} = "AREA CONSIDERED";
 vessel_radii{1, 7} = "TAPERING COEFFICIENTS";
 
 for i = 2:num_vessels
+    fignb = mod(i,10)+1;
+        
     vessel_radii{i, 1} = details{i, 1};  % Vessel ID
     vessel_radii{i, 2} = details{i, 3};  % Vessel length
 
@@ -25,9 +27,9 @@ for i = 2:num_vessels
 
     radius_info = details{i,2}(2:end,4);
     length_info = details{i,2}(2:end,5);
-
+    
     if ploton ==1
-        figure(i)
+        figure(fignb);clf;
         if isempty(cpt_info{i, 2})
             plot(length_info*Scale,radius_info*Scale,'b*','linewidth',3,'markersize',7);
         else
@@ -66,35 +68,26 @@ for i = 2:num_vessels
                 ID(j) = find(length_info == cpt_info{i,2}(j,2));
             end
 
-            length_between = length_info(ID(1):ID(end));
-            radii_between  = radius_info(ID(1):ID(end));
+            %length_between = length_info(ID(1):ID(end));
+            %radii_between  = radius_info(ID(1):ID(end));
+            length_between = length_info;
+            radii_between  = radius_info;
 
             % Using that information, find which changepoints that slope is in
             % between
-            rin_est   = radii_between(1);
-            rout_est  = radii_between(end);
-
             data.x = (length_between-length_between(1))*Scale;
             data.r = radii_between*Scale;
-
-            k1 = (rin_est-rout_est)*Scale;
-            k2 = 1;
-            k3 = rout_est*Scale;
-            pars = [k1 k2 k3];
-
-            rad = k1*exp(-k2*data.x)+k3;
-            opts = optimset('MaxIter',5000,'MaxFunEvals',5000);
-            [xopt, ~, ~, ~] = fminsearch(@model_fmin,pars,opts);
-            k1opt(i)   = xopt(1);
-            k2opt(i)   = xopt(2);
-            k3opt(i)   = xopt(3);
-            rad        = k1opt(i)*exp(-k2opt(i)*data.x)+k3opt(i);
-            rad_ext    = k1opt(i)*exp(-k2opt(i)*length_info*Scale)+k3opt(i);
-            rin        = rad(1)/Scale;
-            rout       = rad(end)/Scale;
-            error      = std(radii_between);
-            N = length(radius_info)-length(radii_between);
-            rad_mod = [radii_between' radii_between(end)*ones(1,N)]';
+            
+            [k1(i) k2(i) k3(i)] = find_tapering_intves(data.x,data.r,0,VesselName);
+            
+            Rest          = k1(i)*exp(-k2(i)*data.x)+k3(i);
+            rin           = Rest(1)/Scale;   %mean(Rest(1:3))/Scale;
+            rout          = Rest(end)/Scale; %mean(Rest(end-3:end))/Scale;
+            Ne            = length(data.r);
+            sumx          = sum((data.r-Rest).^2);
+            error         = sqrt(1/(Ne-1)*sumx);
+            L1            = length(length_info(1:ID(1)-1));
+            L2            = length(length_info(ID(end)+1:end));
         else
             % Find the min of the abs value of slopes vector and its index
             % after first changepoint
@@ -241,28 +234,18 @@ for i = 2:num_vessels
     end
     if ploton == 1
         if ismember(details{i, 1},TaperID)
-            figure(i); hold on;
-            plot(length_between*Scale,rad,'m-','linewidth',3,'markersize',7);
-            plot(length_between*Scale,rad+error*Scale*ones(size(length_between)),'m--','linewidth',3,'markersize',7);
-            plot(length_between*Scale,rad-error*Scale*ones(size(length_between)),'m--','linewidth',3,'markersize',7);
+            figure(fignb); hold on;
+            plot(length_between*Scale,Rest,'m-','linewidth',3,'markersize',7);
+            plot(length_between*Scale,Rest+error*Scale*ones(size(length_between)),'m--','linewidth',3,'markersize',7);
+            plot(length_between*Scale,Rest-error*Scale*ones(size(length_between)),'m--','linewidth',3,'markersize',7);
             set(gca,'fontsize',16);
             xlabel('length (cm)');
             ylabel('radius (cm)');
             legend('Vessel radii', 'Est seg radii','Est vessel radii','Tapered radii')
 
-            figure(i+100); hold on;
-            plot(length_info*Scale,radius_info*Scale,'b*',cpt_info{i,2}(:,2)*Scale,cpt_info{i,2}(:,1)*Scale,'mo','linewidth',3,'markersize',7);
-            plot(length_info*Scale,rad_mod*Scale,'c*',length_info*Scale,rad_ext,'m-','linewidth',3,'markersize',7);
-            plot(length_info*Scale,rad_ext+error*Scale*ones(size(length_info)),'m--','linewidth',3,'markersize',7);
-            plot(length_info*Scale,rad_ext-error*Scale*ones(size(length_info)),'m--','linewidth',3,'markersize',7);
-            set(gca,'fontsize',16);
-            xlabel('length (cm)');
-            ylabel('radius (cm)');
-            legend('Vessel radii','Est vessel radii','Tapered radii')
-            xlim([0 length_info(end)*Scale]);
             pause;
         else
-            figure(i);hold on;
+            figure(fignb);hold on;
             plot(length_info*Scale,rin*Scale*ones(size(length_info)),'m','LineWidth',3)
             plot(length_info*Scale,(rin+error)*Scale*ones(size(length_info)),'m--','LineWidth',3)
             plot(length_info*Scale,(rin-error)*Scale*ones(size(length_info)),'m--','LineWidth',3)
@@ -277,7 +260,7 @@ for i = 2:num_vessels
     vessel_radii{i, 6} = [length_between*Scale radii_between*Scale];
     if ismember(details{i, 1},TaperID)
         ID = str2num(details{i, 1});
-        vessel_radii{i, 7} = [ID k1opt(i) k2opt(i) k3opt(i)];
+        vessel_radii{i, 7} = [ID k1(i) k2(i) k3(i)];
     end
 end
 end % function %

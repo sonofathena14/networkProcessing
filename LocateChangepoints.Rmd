@@ -17,8 +17,8 @@ library(openxlsx)
 ```
 ```{r, include = FALSE}
 source("GlobalFunctions.R")
-data = LargeExcel("./Output/EXPORT_m1p4_060407.xlsx")
-FindChangepoints(data, q=2, plot = TRUE, './Input/IMPORT_m1p4_060407.xlsx')
+data = LargeExcel("./Output/EXPORT_control_3.xlsx")
+FindChangepoints(data, q=2, plot = TRUE, './Input/IMPORT_control_3.xlsx')
 ```
 
 
