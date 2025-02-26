@@ -1,9 +1,9 @@
 function output = plot_vessel(Name, Scale, pv)
 close all;
 
-vessel_detail = load(strcat('FluidsInput/Changepoint_',Name,'.mat'), 'vessel_details');
+vessel_detail = load(strcat('Output/Vessels_',Name,'.mat'), 'vessel_details');
 details = vessel_detail.vessel_details;
-changepoints = load(strcat('FluidsInput/Changepoint_',Name,'.mat'), 'changepoint_location');
+changepoints = load(strcat('Output/Vessels_',Name,'.mat'), 'changepoint_location');
 cpt_info = changepoints.changepoint_location;
 Scale = Scale/10; % convert to cm
 num_vessels = height(details);
