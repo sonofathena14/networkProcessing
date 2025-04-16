@@ -1,4 +1,4 @@
-function [path,arcs,nodes] = removeTooShort(nodes_old,arcs_old,path_old)
+function [path,arcs,nodes] = removeTooShort(nodes_old,arcs_old,path_old,rootID)
 %removeTooShort cycles through all of the edges and removes any edge that
 %is shorter than 5 voxels
 %
@@ -24,6 +24,9 @@ nodes_to_remove = [];
 for i=1:length(segments)%cycles through all vessels
     node1 = segments(i,2);
     node2 = segments(i,3);
+    if node1 == rootID || node2 == rootID
+        continue
+    end
     node1row = find(nodes_old(:,1) == node1);
     node2row = find(nodes_old(:,1) == node2);
     if nodes_old(node1row,5)==1 || nodes_old(node2row,5)==1 %ensures that one vessel is terminal

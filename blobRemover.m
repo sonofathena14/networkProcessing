@@ -16,7 +16,7 @@
 % NOTE: This function calls the "dijkstra" function as well as
 % "findNearestPoints"
 
-function [path,arcs,nodes]=blobRemover(nodes_old,arcs_old,path_old)
+function [path,arcs,nodes]=blobRemover(nodes_old,arcs_old,path_old, rootID)
 BR = 0;
 segments=zeros(length(arcs_old),3); %extacts VES ID and the input/output nodes
 for i=1:length(arcs_old)
@@ -24,53 +24,7 @@ for i=1:length(arcs_old)
     segments(i,2)=arcs_old{1,i}(1,1);
     segments(i,3)=arcs_old{1,i}(1,2);
 end
-%% Identify duplicate vessels
-duplicate_vessels = [];
-node_of_dup_ves = [];
-%Identify duplicates
-for y=1:length(segments)
-   node1 = segments(y,2);
-   node2 = segments(y,3);
-   for z=1:length(segments)
-       if y == z
-           continue
-       end
-       node3 = segments(z,2);
-       node4 = segments(z,3);
-       if node1 == node3 && node2 == node4
-           %Ensures that we don't store the same ves twice, only remove one
-           if any(ismember([node1 node2], node_of_dup_ves)) || any(ismember([node2 node1], node_of_dup_ves))
-               continue
-           end
-           node_of_dup_ves = [node_of_dup_ves; [node1 node2]];
-           duplicate_vessels = [duplicate_vessels; z];
-           continue
-       end
-       if node1 == node4 && node3 == node2
-           if any(ismember([node1 node2], node_of_dup_ves)) || any(ismember([node2 node1], node_of_dup_ves))
-               continue
-           end
-           node_of_dup_ves = [node_of_dup_ves; [node1 node2]];
-           duplicate_vessels = [duplicate_vessels; z];
-           continue
-       end
-   end
-end
-%Remove vessels
-[num_duplicate_vessels,~]=size(duplicate_vessels);
-for i=1:num_duplicate_vessels
-    vessel_ind=duplicate_vessels(i,1);
-    node1=arcs_old{1,vessel_ind}(1,1) ;
-    node2=arcs_old{1,vessel_ind}(1,2) ;
-    node_ind1=find(nodes_old(:,1)==node1);
-    node_ind2=find(nodes_old(:,1)==node2);
-    nodes_old(node_ind1,5)=nodes_old(node_ind1,5)-1;
-    nodes_old(node_ind2,5)=nodes_old(node_ind2,5)-1;
-    arcs_old{1,vessel_ind}=[];
-    disp(['Duplicate edge from node ', num2str(node1), ' to node ', num2str(node2), ' has been removed.'])
-end
-arcs_old=arcs_old(~cellfun('isempty',arcs_old));
-nodes_old( ~any(nodes_old,2), : ) = [];
+
 
 %% Remove blobs
 ans1=input('Is the blob at a junction?','s');% different procedures with and without junction
@@ -96,6 +50,9 @@ if ans1~='Y'
         for j=1:length(nearest_nodes) %cycle every node
             node2 = nearest_nodes(j);
             if node1 == node2
+                continue
+            end
+            if node1 == rootID || node2 == rootID
                 continue
             end
             for x=1:length(segments) %search vessels for 
@@ -150,6 +107,9 @@ if ans1 =='Y'
         for j=1:length(nearest_nodes) %cycle every node
             node2 = nearest_nodes(j);
             if node1 == node2
+                continue
+            end
+            if node1 == rootID || node2 == rootID
                 continue
             end
             for x=1:length(segments) %search vessels for 

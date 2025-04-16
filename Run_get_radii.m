@@ -17,14 +17,14 @@ prompt = "What is the root node? ";
 x = input(prompt);
 
 [path, arcsC, nodesC, correction_log]=correctionEngine(arcs,nodes,x);
-[path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path);
+[path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path,x);
 plotSlicerData(arcsC2,nodesC2,'b',2);
 i = 3;
 ans1 = input('Do you need to remove any blobs?','s');
 if ans1 == 'Y'
     STILL_GOING = 'Y';
     while STILL_GOING =='Y'
-        [path2,arcsC2,nodesC2] = blobRemover(nodesC2,arcsC2,path2);
+        [path2,arcsC2,nodesC2] = blobRemover(nodesC2,arcsC2,path2,x);
         plotSlicerData(arcsC2,nodesC2,'b',i);
         STILL_GOING=input('Do you need to remove another blob?','s');
         i = i+1;

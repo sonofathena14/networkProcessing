@@ -2,7 +2,7 @@ function result = findNearestPoints(nodes)
 %This program identifies the nodes within 5 units of the given node
 %   This will pass back the nodes that need to be removed in blobRemover
 %   This REQUIRES the Statistics Toolbox in Matlab
-    maxDistance = 5; %find all points within this distance, change as needed but better to keep small
+    maxDistance = 10; %find all points within this distance, change as needed but better to keep small
 % Extract X, Y, Z columns
     targetID = input('Node in center of blob: '); %node that will identify what should be removed
     X = nodes(:, 2);
