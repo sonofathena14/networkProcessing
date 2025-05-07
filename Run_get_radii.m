@@ -12,12 +12,12 @@ sO = strcat('./FluidsInput/FluidInput_',Name,'.mat');
 [arcs,nodes] = formatData(s1,s2,s3);
 [arcs]       = OrientArcs(arcs,nodes);
 
-plotSlicerData(arcs,nodes,'b',1); % If root node is not know run plotSlicerData(arcs,nodes,'b');
+plotSlicerData(arcs,nodes,'b',1); %If root node is not know run plotSlicerData(arcs,nodes,'b',1);
 prompt = "What is the root node? ";
 x = input(prompt);
 
 [path, arcsC, nodesC, correction_log]=correctionEngine(arcs,nodes,x);
-[path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path,x);
+[path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path,x); %removes any terminal vessel shorter than 5 voxels
 plotSlicerData(arcsC2,nodesC2,'b',2);
 i = 3;
 ans1 = input('Do you need to remove any blobs?','s');
@@ -60,7 +60,7 @@ while notDone == 'Y'
     notDone=input('Do you need to continue (Y/N)?','s');
 end
 
-
+%calls necessary functions, check specific files for details
 [orientation,newNetwork,connectivity,arcsC3,maxDaughters,maxParrents] = directedGraphInfo(arcsC2,nodesC2, path2);
 
 [vessel_details] = extract_geometry(newNetwork,connectivity,arcsC3,orientation);

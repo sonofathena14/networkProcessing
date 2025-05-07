@@ -59,10 +59,10 @@ end
 [orientation,newNetwork,connectivity,arcsC3,maxDaughters,maxParrents] = directedGraphInfo(arcsC2,nodesC2, path2);
 
 [vessel_details] = extract_geometry(newNetwork,connectivity,arcsC3,orientation);
-save(strcat('Output/Vessels_',Name,'.mat'));
+%save(strcat('Output/Vessels_',Name,'.mat'));
 
-% [T] = Export_to_Excel(vessel_details,0,Name,'Aorta');
-% save(strcat('Output/Segmentation_',Name,'.mat'));
+[T] = Export_to_Excel(vessel_details,0,Name,'Aorta');
+save(strcat('Output/Segmentation_',Name,'.mat'));
 
 disp('Now run next code, ensuring the name is correct');
 

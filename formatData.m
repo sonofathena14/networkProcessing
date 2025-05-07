@@ -27,6 +27,7 @@ function [arcs, nodes]=formatData(data_file,points_file, dmap)
 
 % Read in data file and split into two cells
 str=fileread(points_file);
+str = regexprep(str, '\r\n', '\n');
 str=regexprep(str,'graph G {\n0','0');
 str=regexprep(str,'\n}','');
 str=regexprep(str,'\n0--1  [','\nSPLIT HERE\n0--1  [');
@@ -43,6 +44,7 @@ nodes1=cell2mat(nodes1);
 
 % Read in data file and split into two cells
 str2=fileread(data_file);
+str2 = regexprep(str2, '\r\n', '\n');
 str2=regexprep(str2,'# degrees\n','');
 str2=regexprep(str2,'\n# ete_distances','\nSPLIT HERE');
 str2=strsplit(str2,'\nSPLIT HERE\n');

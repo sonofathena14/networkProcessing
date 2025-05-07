@@ -38,11 +38,8 @@ if ans1~='Y'
         segments(i,3)=arcs_old{1,i}(1,2);
     end
     [~, spath] = dijkstra(nodes_old,segments,node1,node2); %use dijkstra to identify the shortest path through blob
-    %disp(spath)
     nearest_nodes = findNearestPoints(nodes_old); %identify all nodes in blob (within x voxels from center node)
-    %disp(nearest_nodes)
     nodes_to_remove = nearest_nodes(~ismember(nearest_nodes,spath)); %if the node is off path, store to remove it
-    %disp(nodes_to_remove)
     vessels_to_remove = [];
     % remove vessels connected to one of the nodes that need to be removed
     for i=1:length(nodes_to_remove) %cycle each node to be removed
@@ -67,11 +64,9 @@ if ans1~='Y'
             end
         end
     end
-    %disp(vessels_to_remove)
     vessels_to_remove = unique(vessels_to_remove,'rows');
-    %disp(vessels_to_remove)
     [num_to_remove,~]=size(vessels_to_remove);
-    for i=1:num_to_remove
+    for i=1:num_to_remove %removes vessels and corrects degree of nodes
         vessel_ind=vessels_to_remove(i,1);
         node1=arcs_old{1,vessel_ind}(1,1) ;
         node2=arcs_old{1,vessel_ind}(1,2) ;
@@ -83,7 +78,7 @@ if ans1~='Y'
         disp(['Edge from node ', num2str(node1), ' to node ', num2str(node2), ' has been removed.'])
     end
     arcs_old=arcs_old(~cellfun('isempty',arcs_old));
-    for i=1:length(nodes_to_remove)
+    for i=1:length(nodes_to_remove) %removes necessary nodes
         node_row = find(nodes_old(:,1)==nodes_to_remove(i));
         if nodes_old(node_row,5)~=0
             continue
@@ -124,11 +119,9 @@ if ans1 =='Y'
             end
         end
     end
-    %disp(vessels_to_remove)
     vessels_to_remove = unique(vessels_to_remove,'rows');
-    %disp(vessels_to_remove)
     [num_to_remove,~]=size(vessels_to_remove);
-    for i=1:num_to_remove
+    for i=1:num_to_remove %removes stored vessels and corrects node degree
         vessel_ind=vessels_to_remove(i,1);
         node1=arcs_old{1,vessel_ind}(1,1) ;
         node2=arcs_old{1,vessel_ind}(1,2) ;
@@ -140,7 +133,7 @@ if ans1 =='Y'
         disp(['Edge from node ', num2str(node1), ' to node ', num2str(node2), ' has been removed.'])
     end
     arcs_old=arcs_old(~cellfun('isempty',arcs_old));
-    for i=1:length(nodes_to_remove)
+    for i=1:length(nodes_to_remove)  %remove all store nodes
         node_row = find(nodes_old(:,1)==nodes_to_remove(i));
         if nodes_old(node_row,5)~=0
             continue
