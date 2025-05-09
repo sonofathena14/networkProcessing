@@ -71,10 +71,19 @@ changepoint_location=get_changepoint_locations(new_vessel_details);
 
 vessel_radii=get_radii(new_vessel_details, changepoint_location,TaperVes,Scale,ploton);
 
+segments=zeros(length(arcsC3),3); %creates a list of ves id with from and to nodes
+for i=1:length(arcsC3)
+    segments(i,1)=i;
+    segments(i,2)=arcsC3{1,i}(1,1);
+    segments(i,3)=arcsC3{1,i}(1,2);
+end
+
+volumes = edgeVolume(vessel_details);
+
 Data = CreateFluidsCodeInput(vessel_radii,new_vessel_details,maxDaughters);
 save(sO,'Data'); %only saves the necessary input for the fluids code
 save(strcat('Output/Vessels_',Name,'.mat')); %saves entire workspace
-save(strcat('Networks/Network_Vessels_',Name,'.mat'), 'arcsC3', 'nodesC2', 'Data','vessel_details', 'TaperVes','ploton','Scale','maxDaughters')
+save(strcat('Networks/Network_Vessels_',Name,'.mat'), 'arcsC3', 'nodesC2', 'Data','vessel_details', 'TaperVes','ploton','Scale','maxDaughters','segments','volumes')
     % ^ saves the necessary data for statistic extraction and to run/work
     % on the changepoint algorithm
 
