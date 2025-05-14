@@ -11,7 +11,14 @@
 % Output:
 % Figure--3D plot of point cloud
 
-function []=plotSlicerData_lines(arcs, nodes, color,fignb)
+function []=plotSlicerData_lines(Name)
+close all
+load(strcat('Networks/Network_Vessels_',Name,'.mat'), 'arcsC3','nodesC2');
+
+arcs = arcsC3;
+nodes = nodesC2;
+Color = 'b';
+fignb = 1;
 
 % Create vectors (x, y, z) of point coordinates to plot
 x=[];
@@ -37,33 +44,33 @@ zN=nodes(:,4);
 % Plot data, labeling nodes
 figure(fignb)
 hold on
-scatter3(x,y,z,500,color,'.');
-t=text(xN,yN,zN,label,'FontSize',10);
-for i=1:size(nodes, 1)
-%     if ismember(nodes(i,1),B(:,1))
+%scatter3(x,y,z,500,color,'.');
+% t=text(xN,yN,zN,label,'FontSize',10);
+% for i=1:size(nodes, 1)
+% %     if ismember(nodes(i,1),B(:,1))
+% %         t(i).Color = 'red';
+% %         t(i).FontSize = 24;
+% %         t(i).FontWeight = 'bold';
+%       if nodes(i, 5)==1
+%         t(i).Color = 'black';
+%         t(i).FontSize = 18;
+%       elseif nodes(i, 5)==3
 %         t(i).Color = 'red';
+%         t(i).FontSize = 18;
+%       else
+%         t(i).Color = 'magenta';
 %         t(i).FontSize = 24;
-%         t(i).FontWeight = 'bold';
-      if nodes(i, 5)==1
-        t(i).Color = 'black';
-        t(i).FontSize = 18;
-      elseif nodes(i, 5)==3
-        t(i).Color = 'red';
-        t(i).FontSize = 18;
-      else
-        t(i).Color = 'magenta';
-        t(i).FontSize = 24;
-      end
-%     if nodes(i,1)==302
-%         t(i).Color = 'magenta';
-%         t(i).FontSize = 18;
-%         t(i).FontWeight = 'bold';        
-%     elseif nodes(i,1)==303
-%         t(i).Color = 'magenta';
-%         t(i).FontSize = 18;
-%         t(i).FontWeight = 'bold';        
-%     end     
-end
+%       end
+% %     if nodes(i,1)==302
+% %         t(i).Color = 'magenta';
+% %         t(i).FontSize = 18;
+% %         t(i).FontWeight = 'bold';        
+% %     elseif nodes(i,1)==303
+% %         t(i).Color = 'magenta';
+% %         t(i).FontSize = 18;
+% %         t(i).FontWeight = 'bold';        
+% %     end     
+% end
 for i=1:length(arcs)
     A=arcs{1,i};
     [rows, ~]=size(A);
@@ -71,7 +78,7 @@ for i=1:length(arcs)
         v1=A(j-1,1:3);
         v2=A(j,1:3);
         v=[v2;v1];
-        plot3(v(:,1),v(:,2),v(:,3),'Color', [0 0.4470 0.7410]);
+        plot3(v(:,1),v(:,2),v(:,3),'-','Color', [0 0.4470 0.7410],'LineWidth',5);
     end
 end
 %  LABEL COORDINATES
@@ -86,7 +93,7 @@ end
 %     t2.FontSize = 12;
 % end
 hold off
-
+view(180,180)
 % figure(332)
 % hold on
 % s=scatter3(x,y,z,500,'.','MarkerEdgeColor',[.5 .5 .5]);
