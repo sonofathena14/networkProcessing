@@ -1,8 +1,11 @@
-function [arcs, nodes, path]=fix_degree_2(arcs_old, nodes_old, path_old)
+function [arcs, nodes, path]=fix_degree_2(arcs_old, nodes_old, path_old, rootID)
 
 % Find degree 2 nodes to fix
 for i=1:length(nodes_old)
     if nodes_old(i,5)==2
+        if nodes_old(i,1)==rootID
+            continue
+        end
         nodeID=nodes_old(i,1);
         vessels=[];
         for j=1:length(arcs_old)

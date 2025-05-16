@@ -142,7 +142,7 @@ if ans1 =='Y'
         disp(['Node ', num2str(nodes_to_remove(i)), ' has been removed.'])
     end
 end
-[arcs_old, nodes_old, path_old]=fix_degree_2(arcs_old, nodes_old, path_old);
+[arcs_old, nodes_old, path_old]=fix_degree_2(arcs_old, nodes_old, path_old,rootID);
 
 arcs = arcs_old;
 nodes = nodes_old;

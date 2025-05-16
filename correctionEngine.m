@@ -164,7 +164,7 @@ end
 arcs_old=arcs_old(~cellfun('isempty',arcs_old));
 
 %% Fix degree 2 nodes, and collect correction details
-[arcs, nodes, path]=fix_degree_2(arcs_old, nodes_old, path_old);
+[arcs, nodes, path]=fix_degree_2(arcs_old, nodes_old, path_old,root_nodeID);
 correction_log = table(FB, DE, DP, SC);
 
 

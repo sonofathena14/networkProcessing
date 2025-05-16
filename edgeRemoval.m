@@ -1,4 +1,4 @@
-function [arcs,nodes,path] = edgeRemoval(arcs_old,nodes_old,path_old)
+function [arcs,nodes,path] = edgeRemoval(arcs_old,nodes_old,path_old,rootID)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 % Initialize variables
@@ -22,5 +22,7 @@ arcs_old=arcs_old(~cellfun('isempty',arcs_old));
 % % remove any empty cells.
 arcs=arcs_old(~cellfun('isempty',arcs_old));
 nodes = nodes_old;
-[arcs, nodes, path]=fix_degree_2(arcs, nodes, path_old);
+%auto removes the node if degree 0
+[arcs, nodes, path_old]=removeDegree0(arcs, nodes, path_old,rootID);
+[arcs, nodes, path]=fix_degree_2(arcs, nodes, path_old,rootID);
 end
