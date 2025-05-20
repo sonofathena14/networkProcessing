@@ -36,6 +36,17 @@ end
 %plotSlicerData_lines(arcsC2,nodesC2,'b',i);
 plotSlicerData(arcsC2,nodesC2,'b',i);
 i = i+1;
+trians = input('Do you need to generate trifurcations ?','s');
+if trians == 'Y'
+  STILL_GOING = 'Y'; 
+  while STILL_GOING =='Y'
+     [path2,arcsC2,nodesC2] = generateTrifurcation(nodesC2,arcsC2,path2);
+     plotSlicerData(arcsC2,nodesC2,'b',i);
+     STILL_GOING = input('Do you need to generate another trifurcation?','s');
+     i = i+1;
+  end
+end
+
 notDone = 'Y';
 while notDone == 'Y'
     ans2=input('Do you need to remove any edges?','s');
@@ -45,17 +56,6 @@ while notDone == 'Y'
             [arcsC2,nodesC2,path2]=edgeRemoval(arcsC2,nodesC2,path2,x);
             plotSlicerData(arcsC2,nodesC2,'b',i);
             STILL_GOING=input('Do you need to remove another edge?','s');
-            i = i+1;
-        end
-    end
-    
-    ans3=input('Do you need to remove any nodes?','s');
-    if ans3 == 'Y'
-        STILL_GOING = 'Y';
-        while STILL_GOING =='Y'
-            [arcsC2,nodesC2,path2]=nodeRemoval(arcsC2,nodesC2,path2,x);
-            plotSlicerData(arcsC2,nodesC2,'b',i);
-            STILL_GOING=input('Do you need to remove another node?','s');
             i = i+1;
         end
     end
