@@ -1,11 +1,11 @@
-function [arcs,nodes] = scaleFactor(arcs_old,nodes_old)
+function [arcs,nodes,scaler] = scaleFactor(arcs_old,nodes_old)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 root_vessel=input('[node1 node2] of root edge: ');
 for i=1:length(arcs_old)
     if arcs_old{1,i}(1, 1:2)==root_vessel | arcs_old{1,i}(1, 1:2)==flip(root_vessel)
         radii = [];
-        for j=1:5
+        for j=1:10
             radii = [radii; arcs_old{1,i}(j,4)];
         end
         ravg = mean(radii);

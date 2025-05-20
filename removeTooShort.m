@@ -1,4 +1,4 @@
-function [path,arcs,nodes] = removeTooShort(nodes_old,arcs_old,path_old,rootID)
+function [path,arcs,nodes] = removeTooShort(nodes_old,arcs_old,path_old,rootID,sf)
 %removeTooShort cycles through all of the edges and removes any edge that
 %is shorter than 5 voxels
 %
@@ -33,7 +33,7 @@ for i=1:length(segments)%cycles through all vessels
         x = nodes_old(node1row,2) - nodes_old(node2row,2);
         y = nodes_old(node1row,3) - nodes_old(node2row,3);
         z = nodes_old(node1row,4) - nodes_old(node2row,4);
-        if sqrt(abs(x)^2 + abs(y)^2 + abs(z)^2) < 5 %if less than 5 voxels, remove vessel
+        if sqrt(abs(x)^2 + abs(y)^2 + abs(z)^2) < 5*sf %if less than 5 voxels, remove vessel
             vessels_to_remove  = [vessels_to_remove; i];
             if nodes_old(node1row,5)==1 %stores the terminal node to remove it
                 nodes_to_remove = [nodes_to_remove; node1];

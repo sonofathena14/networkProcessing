@@ -1,9 +1,9 @@
 function Run_get_radii_mice(Name,TaperVes,ploton)
 close all;
-% Name = 'm2p4_053007';
+% Name = 'm3p1_060407';
 % TaperVes = [];
-% Scale = 1;
 % ploton=0;
+
 s1 = strcat('../',Name,'_SKEL_adj_dmax_isthmus1_p0_REDUCED_sp_c_m_data.txt');
 s2 = strcat('../',Name,'_SKEL_adj_dmax_isthmus1_p0_REDUCED_sp_c_m.dot');
 s3 = strcat('../',Name,'_DMAP.nrrd');
@@ -18,8 +18,8 @@ x = input(prompt);
 
 [path, arcsC, nodesC, correction_log]=correctionEngine(arcs,nodes,x);
 plotSlicerData(arcsC,nodesC,'b',2);
-[arcsC,nodesC] = scaleFactor(arcsC,nodesC);
-[path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path,x); %removes any terminal vessel shorter than 5 voxels
+[arcsC,nodesC,sf] = scaleFactor(arcsC,nodesC);
+[path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path,x,sf); %removes any terminal vessel shorter than 5 voxels
 plotSlicerData(arcsC2,nodesC2,'b',3);
 i = 4;
 ans1 = input('Do you need to remove any blobs?','s');
@@ -85,7 +85,7 @@ volumes = edgeVolume(vessel_details);
 Data = CreateFluidsCodeInput(vessel_radii,new_vessel_details,maxDaughters);
 save(sO,'Data'); %only saves the necessary input for the fluids code
 save(strcat('Output/Vessels_',Name,'.mat')); %saves entire workspace
-save(strcat('Networks/Network_Vessels_',Name,'.mat'), 'arcsC3', 'nodesC2', 'Data','vessel_details', 'TaperVes','ploton','maxDaughters','segments','volumes')
+save(strcat('Networks/Network_Vessels_',Name,'.mat'), 'arcsC3', 'nodesC2', 'Data','vessel_details', 'TaperVes','ploton','maxDaughters','segments','volumes','sf')
     % ^ saves the necessary data for statistic extraction and to run/work
     % on the changepoint algorithm
 
