@@ -24,6 +24,8 @@ for i=1:numVessels
     else
         newNetwork(i,2)=A(1,2);
         newNetwork(i,3)=A(1,1);
+        arcsC{1,i}(1,1)=A(1,2);
+        arcsC{1,i}(1,2)=A(1,1);
     end
 
     % RADIUS   

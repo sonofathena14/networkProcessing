@@ -1,6 +1,6 @@
 function Run_get_radii_mice(Name,TaperVes,ploton)
 close all;
-% Name = 'm3p1_060407';
+% Name = 'm2p2_053007';
 % TaperVes = [];
 % ploton=0;
 
@@ -17,8 +17,7 @@ prompt = "What is the root node? ";
 x = input(prompt);
 
 [path, arcsC, nodesC, correction_log]=correctionEngine(arcs,nodes,x);
-plotSlicerData(arcsC,nodesC,'b',2);
-[arcsC,nodesC,sf] = scaleFactor(arcsC,nodesC);
+plotSlicerData(arcsC,nodesC,'b',2);[arcsC,nodesC,sf] = scaleFactor(arcsC,nodesC);
 [path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path,x,sf); %removes any terminal vessel shorter than 5 voxels
 plotSlicerData(arcsC2,nodesC2,'b',3);
 i = 4;
@@ -36,7 +35,7 @@ end
 %plotSlicerData_lines(arcsC2,nodesC2,'b',i);
 plotSlicerData(arcsC2,nodesC2,'b',i);
 i = i+1;
-trians = input('Do you need to generate trifurcations ?','s');
+trians = input('Do you need to generate trifurcations?','s');
 if trians == 'Y'
   STILL_GOING = 'Y'; 
   while STILL_GOING =='Y'
