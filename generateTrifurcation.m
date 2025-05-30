@@ -1,4 +1,4 @@
-function [path,arcs,nodes] = generateTrifurcation(nodes_old,arcs_old,path_old)
+function [path,arcs,nodes] = generateTrifurcation(nodes_old,arcs_old,path_old,x)
 
 nodes = input('Input nodes to be merged start with node to be removed [node1 node2]: '); 
 nodee = input('End node for vessel to be moved to trifurcation: ');
@@ -42,6 +42,6 @@ end
 %disp('Remove node before trifurcation')  
 %[arcsN,nodesN,pathN]=nodeRemoval(arcs_old,nodes_old,path_old);
 
-[arcs, nodes, path] = fix_degree_2(arcs_old, nodes_old, path_old);
+[arcs, nodes, path] = fix_degree_2(arcs_old, nodes_old, path_old,x);
 
 end
