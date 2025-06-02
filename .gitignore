@@ -8,3 +8,5 @@
 /Networks
 /Statistics
 /Mesh
+*.csv
+*.npy

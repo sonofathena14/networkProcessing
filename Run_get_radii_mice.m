@@ -39,7 +39,7 @@ trians = input('Do you need to generate trifurcations?','s');
 if trians == 'Y'
   STILL_GOING = 'Y'; 
   while STILL_GOING =='Y'
-     [path2,arcsC2,nodesC2] = generateTrifurcation(nodesC2,arcsC2,path2);
+     [path2,arcsC2,nodesC2] = generateTrifurcation(nodesC2,arcsC2,path2,x);
      plotSlicerData(arcsC2,nodesC2,'b',i);
      STILL_GOING = input('Do you need to generate another trifurcation?','s');
      i = i+1;
