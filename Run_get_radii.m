@@ -35,6 +35,17 @@ end
 %plotSlicerData_lines(arcsC2,nodesC2,'b',i);
 plotSlicerData(arcsC2,nodesC2,'b',i);
 i = i+1;
+trians = input('Do you need to generate trifurcations?','s');
+if trians == 'Y'
+  STILL_GOING = 'Y'; 
+  while STILL_GOING =='Y'
+     [path2,arcsC2,nodesC2] = generateTrifurcation(nodesC2,arcsC2,path2,x);
+     plotSlicerData(arcsC2,nodesC2,'b',i);
+     STILL_GOING = input('Do you need to generate another trifurcation?','s');
+     i = i+1;
+  end
+end
+
 notDone = 'Y';
 while notDone == 'Y'
     ans2=input('Do you need to remove any edges?','s');
@@ -44,17 +55,6 @@ while notDone == 'Y'
             [arcsC2,nodesC2,path2]=edgeRemoval(arcsC2,nodesC2,path2,x);
             plotSlicerData(arcsC2,nodesC2,'b',i);
             STILL_GOING=input('Do you need to remove another edge?','s');
-            i = i+1;
-        end
-    end
-    
-    ans3=input('Do you need to remove any nodes?','s');
-    if ans3 == 'Y'
-        STILL_GOING = 'Y';
-        while STILL_GOING =='Y'
-            [arcsC2,nodesC2,path2]=nodeRemoval(arcsC2,nodesC2,path2,x);
-            plotSlicerData(arcsC2,nodesC2,'b',i);
-            STILL_GOING=input('Do you need to remove another node?','s');
             i = i+1;
         end
     end
@@ -79,12 +79,12 @@ for i=1:length(arcsC3)
     segments(i,3)=arcsC3{1,i}(1,2);
 end
 
-volumes = edgeVolume(vessel_details);
+%volumes = edgeVolume(vessel_details);
 
 Data = CreateFluidsCodeInput(vessel_radii,new_vessel_details,maxDaughters);
 save(sO,'Data'); %only saves the necessary input for the fluids code
-save(strcat('Output/Vessels_',Name,'.mat')); %saves entire workspace
-save(strcat('Networks/Network_Vessels_',Name,'.mat'), 'arcsC3', 'nodesC2', 'Data','vessel_details', 'TaperVes','ploton','Scale','maxDaughters','segments','volumes')
+%save(strcat('Output/Vessels_',Name,'.mat')); %saves entire workspace
+%save(strcat('Networks/Network_Vessels_',Name,'.mat'), 'arcsC3', 'nodesC2', 'Data','vessel_details', 'TaperVes','ploton','Scale','maxDaughters','segments','volumes')
     % ^ saves the necessary data for statistic extraction and to run/work
     % on the changepoint algorithm
 

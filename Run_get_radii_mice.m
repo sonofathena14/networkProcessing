@@ -17,7 +17,8 @@ prompt = "What is the root node? ";
 x = input(prompt);
 
 [path, arcsC, nodesC, correction_log]=correctionEngine(arcs,nodes,x);
-plotSlicerData(arcsC,nodesC,'b',2);[arcsC,nodesC,sf] = scaleFactor(arcsC,nodesC);
+plotSlicerData(arcsC,nodesC,'b',2);
+[arcsC,nodesC,sf] = scaleFactor(arcsC,nodesC);
 [path2,arcsC2,nodesC2] = removeTooShort(nodesC,arcsC,path,x,sf); %removes any terminal vessel shorter than 5 voxels
 plotSlicerData(arcsC2,nodesC2,'b',3);
 i = 4;

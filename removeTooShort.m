@@ -63,5 +63,6 @@ for i=1:length(nodes_to_remove) %removes the terminal vessels
     disp(['Node ', num2str(nodes_to_remove(i)), ' has been removed.'])
 end
 nodes_old( ~any(nodes_old,2), : ) = []; %resets the nodes to remove blank rows
+[arcs_old, nodes_old, path_old]=removeDegree0(arcs_old, nodes_old, path_old,rootID);
 [arcs, nodes, path]=fix_degree_2(arcs_old, nodes_old, path_old,rootID); %removes any newly created degree 2 vessels
 end
