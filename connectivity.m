@@ -1,7 +1,7 @@
 function [Connection, maxNumDaughters, maxNumParents]=connectivity(nodes, newNetwork)
 
 numNodes=length(nodes);
-Connection=zeros(numNodes,9); % Extra columns to make allowances for up to 4 daughters and 2 parents
+Connection=zeros(numNodes,8); % Extra columns to make allowances for up to 4 daughters and 2 parents
 
 for i=1:numNodes
     
