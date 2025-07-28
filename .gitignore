@@ -11,3 +11,5 @@
 *.csv
 *.npy
 /GeneratorInput
+/Generated
+/Presentations

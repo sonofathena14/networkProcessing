@@ -63,7 +63,7 @@ while notDone == 'Y'
 end
 
 %calls necessary functions, check specific files for details
-[orientation,newNetwork,connectivity,arcsC3,maxDaughters,maxParrents] = directedGraphInfo(arcsC2,nodesC2, path2);
+[orientation,newNetwork,connectivity,arcsC3,maxDaughters,~] = directedGraphInfo(arcsC2,nodesC2, path2);
 
 [vessel_details] = extract_geometry(newNetwork,connectivity,arcsC3,orientation);
 
