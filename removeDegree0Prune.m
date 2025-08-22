@@ -10,5 +10,4 @@ end
 nodes_old( ~any(nodes_old,2), : ) = [];
 arcs = arcs_old;
 nodes = nodes_old;
-
 end

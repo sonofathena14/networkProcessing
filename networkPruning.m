@@ -2,8 +2,7 @@ function networkPruning(Name,avg_control_branches)
 % clear all
 % Name = 'm1p4_053007';
 % avg_control_branches = 850;
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+
 oldData = load(strcat('Networks/Network_Vessels_',Name,'.mat'),'Data');
 oldData = oldData.('Data');
 oldSegments = load(strcat('Networks/Network_Vessels_',Name,'.mat'),'segments');
@@ -14,15 +13,11 @@ nodesC3 = load(strcat('Networks/Network_Vessels_',Name,'.mat'),'nodesC2');
 nodesC3 = nodesC3.('nodesC2');
 sf = load(strcat('Networks/Network_Vessels_',Name,'.mat'),'sf');
 sf = sf.('sf');
+
 mapIDs = oldData.mapIDs;
 TaperVes = [];
 ploton = 0;
 [vessels_to_prune, radThreshold]=radiusPruning(oldData, avg_control_branches);
-
-%% find root ID and generate path
-oldRootVesID = mapIDs(1,2);
-rootID = oldSegments(oldRootVesID,2);
-[~,path]=dijkstra(nodesC3,oldSegments,rootID);
 
 %% remove pruned vessels
 for i=1:length(vessels_to_prune)
@@ -32,9 +27,10 @@ for i=1:length(vessels_to_prune)
     [arcsC4,nodesC3] = edgePrune(arcsC4,nodesC3,from,to);
 end
 
+
 %% Reextract radii, angles and then save updated network
 %calls necessary functions, check specific files for details
-[orientation,newNetwork,connectivity,arcsC5,maxDaughters,~] = directedGraphInfo(arcsC4,nodesC3, path);
+[orientation, newNetwork,connectivity,arcsC5,maxDaughters,~] = directedGraphInfoPrune(arcsC4,nodesC3);
 
 [vessel_details] = extract_geometry(newNetwork,connectivity,arcsC5,orientation);
 

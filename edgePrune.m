@@ -1,4 +1,4 @@
-function [arcs,nodes,path] = edgePrune(arcs_old,nodes_old,node1,node2)
+function [arcs,nodes] = edgePrune(arcs_old,nodes_old,node1,node2)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 % Initialize variables
