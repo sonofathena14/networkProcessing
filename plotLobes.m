@@ -1,21 +1,25 @@
 close all
-Name = 'm1p2_060107';
+Name = 'm1p1_053107';
 arcs = load(strcat('Networks/Network_Vessels_',Name,'.mat'),'arcsC3');
 nodes = load(strcat('Networks/Network_Vessels_',Name,'.mat'),'nodesC2');
 arcs = arcs.arcsC3;
 nodes = nodes.nodesC2;
 % ==== USER INPUT SECTION ====
 startVessels = [
-    2089 2169; %left
-    2162 2163;% superior
-    2164 2098; %middle 1
-    2153 927; %middle 2
-    2153 2151; %inferior
-    2164 2190 %post caval
+    3954 3900; %left
+    4071 685;% superior
+    4179 4304; %middle 1
+    4018 4379; %middle 2
+    4018 4019; %inferior
+    4296 1851 %post caval
 ];
 
 colors = {'r','g','m','m','c','k','g'};  % Define up to 6 distinct colors
 fignb = 2;
+
+legendEntries = {
+    'Left', 'Superior', 'Middle', 'Inferior', 'Post Caval'
+};
 
 NumVessels = length(arcs);
 arcMap = zeros(NumVessels, 2);  % Store from/to for each arc
@@ -39,12 +43,41 @@ end
 
 % Plot each arc individually with color
 figure(fignb); clf; hold on
+plotHandles = gobjects(length(legendEntries),1);  % Preallocate
+
+% Map colors to legend index (note both magenta arcs map to 'Middle')
+colorToLegendIndex = containers.Map( ...
+    {'r', 'g', 'm', 'c', 'k'}, ...
+    {1,   2,   3,   4,   5} ...
+);
+
+legendHandles = containers.Map();
+
 for i = 1:NumVessels
     arc = arcs{1,i};
     coords = arc(2:end, 1:3);
-    plot3(coords(:,1), coords(:,2), coords(:,3), ...
-          'Color', arcColors{i}, 'LineWidth', 1.5);
+    color = arcColors{i};
+    
+    % Plot arc
+    h = plot3(coords(:,1), coords(:,2), coords(:,3), ...
+              'Color', color, 'LineWidth', 5);
+    
+    % Store one handle per relevant color for the legend
+    if ~strcmp(color, 'b') && ~isKey(legendHandles, color)
+        if isKey(colorToLegendIndex, color)
+            idx = colorToLegendIndex(color);
+            legendHandles(color) = h;
+            plotHandles(idx) = h;
+        end
+    end
 end
+
+% Remove unused handles
+validIdx = plotHandles ~= gobjects(1);
+plotHandles = plotHandles(validIdx);
+legendLabels = legendEntries(validIdx);
+
+legend(plotHandles, legendLabels, 'Location', 'best');
 
 % Plot nodes and labels
 % label = num2str(nodes(:,1));
@@ -73,7 +106,7 @@ zN = nodes(loc, 4);
 label = num2str(nodes(loc, 1));
 
 % Plot labels for these nodes only
-t = text(xN, yN, zN, label, 'FontSize', 16);
+t = text(xN, yN, zN, label, 'FontSize', 30);
 
 for i = 1:length(t)
     nodeIndex = loc(i);
@@ -86,7 +119,7 @@ for i = 1:length(t)
 end
 
 view(0,0)
-set(gca, 'fontsize', 16);
+set(gca, 'fontsize', 30);
 hold off
 
 function downstream = findDownstreamArcs(arcMap, startArc)
