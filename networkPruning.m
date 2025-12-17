@@ -19,6 +19,8 @@ TaperVes = [];
 ploton = 0;
 [vessels_to_prune, radThreshold]=radiusPruning(oldData, avg_control_branches);
 
+plotSlicerData_prunedOverOrig_2(arcsC4, vessels_to_prune, oldData)
+
 %% remove pruned vessels
 for i=1:length(vessels_to_prune)
     oldID = mapIDs(find(mapIDs(:,1)==vessels_to_prune(i)),2);
