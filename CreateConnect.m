@@ -1,4 +1,4 @@
-function [newVesConn,mapIDs,TermVes] = CreateConnect(details,maxDaughters)
+function [newVesConn,mapIDs,TermVes] = CreateConnect(details,maxDaughters,segments)
 
 NumVes = length(details(2:end,1));
 VesConn = zeros(NumVes,4);
@@ -45,3 +45,13 @@ end
 
 TermVes = find(newVesConn(:,2)==0)-1;
 mapIDs  = [(0:NumVes-1)' VesConn(:,1)];
+
+% Convert to tables
+T1 = array2table(mapIDs, 'VariableNames', {'new', 'old'});
+T2 = array2table(segments, 'VariableNames', {'old', 'f', 't'});
+
+% Join on 'old' column
+result = innerjoin(T1, T2, 'Keys', 'old');
+
+mapIDs = table2array(result(:, {'new', 'old', 'f', 't'}));
+mapIDs = sortrows(mapIDs, 1); % sort by first column (new)

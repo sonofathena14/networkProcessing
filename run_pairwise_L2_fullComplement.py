@@ -708,7 +708,7 @@ def run_pairwise(curves, graphtype, pressure, metrics_dict):
 
     for dim in [0,1,2]:
         save_distance_heatmap(distance_matrices[dim], names, dim, 
-            'PairwiseDistances/Full/'+graphtype+'_Pressure'+pressure+'_Dim'+str(dim), 
+            'PairwiseDistances/FullComplement/'+graphtype+'_Pressure'+pressure+'_Dim'+str(dim), 
             title=f"{graphtype} Curve Pairwise $L^2$ Distances (Dimension {dim}, Full Mouse Complement)", 
             figsize=(12, 8), cmap='viridis', annot=True, fmt='.3f', dpi=300,
             group_stats=group_stats[dim], group1_indices=group1_indices, 
@@ -841,7 +841,7 @@ metric_cols = sorted([col for col in metrics_df.columns if col not in base_cols]
 column_order = base_cols + metric_cols
 
 metrics_df = metrics_df[column_order]
-metrics_df.to_csv('PairwiseDistances/FullComplement/curve_metrics_summary.csv', index=False)
+metrics_df.to_csv('PairwiseDistances/FullComplement/curve_metrics_summary_complement_full.csv', index=False)
 print(f"\nSaved curve metrics summary to PairwiseDistances/FullComplement/curve_metrics_summary.csv")
 print(f"Total rows: {len(metrics_df)}")
 print(f"Columns: {list(metrics_df.columns)}")

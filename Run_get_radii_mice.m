@@ -84,7 +84,7 @@ end
 
 volumes = edgeVolume(vessel_details);
 
-Data = CreateFluidsCodeInput(vessel_radii,new_vessel_details,maxDaughters);
+Data = CreateFluidsCodeInput(vessel_radii,new_vessel_details,maxDaughters,segments);
 save(sO,'Data'); %only saves the necessary input for the fluids code
 save(strcat('Output/Vessels_',Name,'.mat')); %saves entire workspace
 save(strcat('Networks/Network_Vessels_',Name,'.mat'), 'arcsC3', 'nodesC2', 'Data','vessel_details', 'TaperVes','ploton','maxDaughters','segments','volumes','sf','Angles')

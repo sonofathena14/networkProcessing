@@ -25,3 +25,5 @@
 /landscape_heatmaps
 /Oriented
 /__pycache__
+/mds_results
+*.png

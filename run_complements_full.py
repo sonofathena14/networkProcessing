@@ -9,7 +9,7 @@ import os
 # Global functions
 def nodesExtractor(name):
     """Extracts nodes and their corresponding information"""
-    file_path = 'Complement/' + name + '.csv'
+    file_path = 'FullComplement/' + name + '.csv'
     points = pd.read_csv(file_path)
     points = points.iloc[:, 1:]
     return points
@@ -265,31 +265,31 @@ def save_landscape(t_vals, landscapes, dim, filename, title=None, limit=[0, 100]
     plt.close()
     print(f"Saved landscape plot to {filename}")
 
-def process_pressure_lobe(pressure, lobe):
+def process_pressure(pressure):
     """Process analysis for a given pressure and lobe"""
     print(f"\n{'='*60}")
-    print(f"Processing Pressure {pressure}, Lobe {lobe}")
+    print(f"Processing Pressure {pressure}")
     print(f"{'='*60}\n")
     
     # Create output directory
-    output_dir = f'2DComplementGraphs/Pressure{pressure}/{lobe}'
+    output_dir = f'2DComplementGraphs/Full/Pressure{pressure}'
     os.makedirs(output_dir, exist_ok=True)
     
     # Load datasets
     datasets = {
-        'm1053007': nodesToArray(f'm1p{pressure}_053007_{lobe}'),
-        'm2053007': nodesToArray(f'm2p{pressure}_053007_{lobe}'),
-        'm1053107': nodesToArray(f'm1p{pressure}_053107_{lobe}'),
-        'm2053107': nodesToArray(f'm2p{pressure}_053107_{lobe}'),
-        'm1060107': nodesToArray(f'm1p{pressure}_060107_{lobe}'),
-        'm1060407': nodesToArray(f'm1p{pressure}_060407_{lobe}'),
-        'm2060407': nodesToArray(f'm2p{pressure}_060407_{lobe}'),
-        'm3060407': nodesToArray(f'm3p{pressure}_060407_{lobe}'),
-        'm1060507': nodesToArray(f'm1p{pressure}_060507_{lobe}'),
-        'm2060507': nodesToArray(f'm2p{pressure}_060507_{lobe}'),
-        'm3060507': nodesToArray(f'm3p{pressure}_060507_{lobe}'),
-        'm2060607': nodesToArray(f'm2p{pressure}_060607_{lobe}'),
-        'm3060607': nodesToArray(f'm3p{pressure}_060607_{lobe}')
+        'm1053007': nodesToArray(f'm1p{pressure}_053007_Full'),
+        'm2053007': nodesToArray(f'm2p{pressure}_053007_Full'),
+        'm1053107': nodesToArray(f'm1p{pressure}_053107_Full'),
+        'm2053107': nodesToArray(f'm2p{pressure}_053107_Full'),
+        'm1060107': nodesToArray(f'm1p{pressure}_060107_Full'),
+        'm1060407': nodesToArray(f'm1p{pressure}_060407_Full'),
+        'm2060407': nodesToArray(f'm2p{pressure}_060407_Full'),
+        'm3060407': nodesToArray(f'm3p{pressure}_060407_Full'),
+        'm1060507': nodesToArray(f'm1p{pressure}_060507_Full'),
+        'm2060507': nodesToArray(f'm2p{pressure}_060507_Full'),
+        'm3060507': nodesToArray(f'm3p{pressure}_060507_Full'),
+        'm2060607': nodesToArray(f'm2p{pressure}_060607_Full'),
+        'm3060607': nodesToArray(f'm3p{pressure}_060607_Full')
     }
     
     # Compute persistence
@@ -364,70 +364,68 @@ def process_pressure_lobe(pressure, lobe):
     print("\nSaving average curves...")
     for dim in range(3):
         # Betti curves
-        filename = f'{output_dir}/Betti_{dim}_Average_P{pressure}_{lobe}'
+        filename = f'{output_dir}/Betti_{dim}_Average_P{pressure}_Full'
         save_curves([avg_betti_hyper, avg_betti_control], ['Hyper', 'Control'], dim, filename,
-                   f"Comparison of Average Betti Curves Lobe {lobe}", [0, global_last_deaths[dim]])
+                   f"Comparison of Average Betti Curves Lobe Full", [0, global_last_deaths[dim]])
         
         # Lifespan curves
-        filename = f'{output_dir}/Lifespan_{dim}_Average_P{pressure}_{lobe}'
+        filename = f'{output_dir}/Lifespan_{dim}_Average_P{pressure}_Full'
         save_curves([avg_lifespan_hyper, avg_lifespan_control], ['Hyper', 'Control'], dim, filename,
-                   f"Comparison of Average Lifespan Curves Lobe {lobe}", [0, global_last_deaths[dim]])
+                   f"Comparison of Average Lifespan Curves Lobe Full", [0, global_last_deaths[dim]])
         
         # Normalized lifespan curves
-        filename = f'{output_dir}/Norm_Lifespan_{dim}_Average_P{pressure}_{lobe}'
+        filename = f'{output_dir}/Norm_Lifespan_{dim}_Average_P{pressure}_Full'
         save_curves([avg_norm_lifespan_hyper, avg_norm_lifespan_control], ['Hyper', 'Control'], dim, filename,
-                   f"Comparison of Average Norm Lifespan Curves Lobe {lobe}", [0, global_last_deaths[dim]])
+                   f"Comparison of Average Norm Lifespan Curves Lobe Full", [0, global_last_deaths[dim]])
     
     # Save individual curves
     print("\nSaving individual Betti curves...")
     for dim in range(3):
         for i, mouse_name in enumerate(keys):
             group = 'Hyper' if i < 5 else 'Control'
-            filename = f'{output_dir}/Betti_{dim}_{group}_{mouse_name}_P{pressure}_{lobe}'
+            filename = f'{output_dir}/Betti_{dim}_{group}_{mouse_name}_P{pressure}_Full'
             save_curves([betti_curves[mouse_name]], [mouse_name], dim, filename,
-                       f"Betti Curve Lobe {lobe}", [0, global_last_deaths[dim]])
+                       f"Betti Curve Lobe Full", [0, global_last_deaths[dim]])
     
     print("\nSaving individual lifespan curves...")
     for dim in range(3):
         for i, mouse_name in enumerate(keys):
             group = 'Hyper' if i < 5 else 'Control'
-            filename = f'{output_dir}/Lifespan_{dim}_{group}_{mouse_name}_P{pressure}_{lobe}'
+            filename = f'{output_dir}/Lifespan_{dim}_{group}_{mouse_name}_P{pressure}_Full'
             save_curves([lifespan_curves[mouse_name]], [mouse_name], dim, filename,
-                       f"Lifespan Curve Lobe {lobe}", [0, global_last_deaths[dim]])
+                       f"Lifespan Curve Lobe Full", [0, global_last_deaths[dim]])
     
     print("\nSaving individual normalized lifespan curves...")
     for dim in range(3):
         for i, mouse_name in enumerate(keys):
             group = 'Hyper' if i < 5 else 'Control'
-            filename = f'{output_dir}/Norm_Lifespan_{dim}_{group}_{mouse_name}_P{pressure}_{lobe}'
+            filename = f'{output_dir}/Norm_Lifespan_{dim}_{group}_{mouse_name}_P{pressure}_Full'
             save_curves([norm_lifespan_curves[mouse_name]], [mouse_name], dim, filename,
-                       f"Norm Lifespan Curve Lobe {lobe}", [0, global_last_deaths[dim]])
+                       f"Norm Lifespan Curve Lobe Full", [0, global_last_deaths[dim]])
     
     print("\nSaving persistence landscapes...")
     for i, mouse_name in enumerate(keys):
         group = 'Hyper' if i < 5 else 'Control'
         for dim in range(3):
-            filename = f'{output_dir}/Persistence_Landscape_{dim}_{group}_{mouse_name}_P{pressure}_{lobe}'
+            filename = f'{output_dir}/Persistence_Landscape_{dim}_{group}_{mouse_name}_P{pressure}_Full'
             t_vals, landscapes = landscape_curves[mouse_name][dim]
             save_landscape(t_vals, landscapes, dim, filename,
-                         f'Persistence Landscape {mouse_name} Dimension {dim} Lobe {lobe}',
+                         f'Persistence Landscape {mouse_name} Dimension {dim} Lobe Full',
                          [0, global_last_deaths[dim]], dpi=150)
     
-    print(f"\nCompleted processing for Pressure {pressure}, Lobe {lobe}")
+    print(f"\nCompleted processing for Pressure {pressure}, Lobe Full")
 
 # Main execution
 if __name__ == "__main__":
     pressures = ['1', '2', '3', '4']  # Add or modify pressure values as needed
-    lobes = ['left', 'superior', 'middle', 'inferior', 'postcaval']  # Add or modify lobes as needed
     
     for pressure in pressures:
-        for lobe in lobes:
-            try:
-                process_pressure_lobe(pressure, lobe)
-            except Exception as e:
-                print(f"\nERROR processing Pressure {pressure}, Lobe {lobe}:")
-                print(f"  {str(e)}")
-                print("Continuing with next combination...\n")
+        try:
+            process_pressure(pressure)
+        except Exception as e:
+            print(f"\nERROR processing Pressure {pressure}, Lobe Full:")
+            print(f"  {str(e)}")
+            print("Continuing with next combination...\n")
     
     print("\n" + "="*60)
     print("All processing complete!")

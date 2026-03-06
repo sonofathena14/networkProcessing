@@ -1,4 +1,4 @@
-function data = CreateFluidsCodeInput(vessel_radii,details,maxDaughters)
+function data = CreateFluidsCodeInput(vessel_radii,details,maxDaughters,segments)
     
     NumVes = length(vessel_radii(2:end,1));
 
@@ -8,7 +8,7 @@ function data = CreateFluidsCodeInput(vessel_radii,details,maxDaughters)
     error    = cell2mat(vessel_radii(2:end, 5));
     TaperIDs = cell2mat(vessel_radii(2:end, 7));
     
-   [newConnectivity,mapIDs,TermVes] = CreateConnect(details,maxDaughters);
+   [newConnectivity,mapIDs,TermVes] = CreateConnect(details,maxDaughters,segments);
    
     if size(TaperIDs,1) ~= 0 
       for i = 1:size(TaperIDs,1)

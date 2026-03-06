@@ -799,7 +799,7 @@ metric_cols = sorted([col for col in metrics_df.columns if col not in base_cols]
 column_order = base_cols + metric_cols
 
 metrics_df = metrics_df[column_order]
-metrics_df.to_csv('PairwiseDistances/Lobe_Complement/curve_metrics_summary.csv', index=False)
+metrics_df.to_csv('PairwiseDistances/Lobe_Complement/curve_metrics_summary_complement_lobe.csv', index=False)
 print(f"\nSaved curve metrics summary to PairwiseDistances/Lobe_Complement/curve_metrics_summary.csv")
 print(f"Total rows: {len(metrics_df)}")
 print(f"Columns: {list(metrics_df.columns)}")

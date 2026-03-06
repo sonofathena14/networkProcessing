@@ -1,4 +1,4 @@
-function [DataOut] = get_radii_aorta(vessel_details,Data,Scale)
+function [DataOut] = get_radii_aorta(vessel_details,Scale,Data)
 %function get_radii_aorta; (details, Scale, Data)
 %close all;
 
