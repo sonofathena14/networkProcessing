@@ -1139,7 +1139,7 @@ for pressure in ['1','2','3','4']:
             'm3060607': twoInputVessels('m3p'+pressure+'_060607',m3060607[0], m3060607[1], m3060607[2], m3060607[3], 0),
             }
         elif lobe == 'superior':
-            if pressure == 1:
+            if pressure == '1':
                 datasets = {
                 'm1053007': lobeTermLoc('m1p'+pressure+'_053007',m1053007[0], m1053007[1], 1),
                 'm2053007': lobeTermLoc('m2p'+pressure+'_053007',m2053007[0], m2053007[1], 1),

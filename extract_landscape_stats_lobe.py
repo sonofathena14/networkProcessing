@@ -298,7 +298,8 @@ all_landscape_curves = {}
 all_persistence_diagrams = {}
 
 for pressure in ['1', '2', '3', '4']:
-    for lobe in ['left','superior','inferior','middle','postcaval']:
+    #for lobe in ['left','superior','inferior','middle','postcaval']:
+    for lobe in ['superior']:
         if lobe == "middle":
             if pressure == '1':
                 m1053007 = [1841, 1945, 1841, 1964]
@@ -601,7 +602,7 @@ for pressure in ['1', '2', '3', '4']:
             'm3060607': twoInputVessels('m3p'+pressure+'_060607',m3060607[0], m3060607[1], m3060607[2], m3060607[3], 0),
             }
         elif lobe == 'superior':
-            if pressure == 1:
+            if pressure == '1':
                 datasets = {
                 'm1053007': lobeTermLoc('m1p'+pressure+'_053007',m1053007[0], m1053007[1], 1),
                 'm2053007': lobeTermLoc('m2p'+pressure+'_053007',m2053007[0], m2053007[1], 1),
@@ -660,25 +661,10 @@ for pressure in ['1', '2', '3', '4']:
                 global_last_deaths[dim] = max(global_last_deaths.get(dim, death), death)
 
         landscape_curves = {
-            name: compute_landscape_curves(diag, t_min=0, t_max_per_dim=global_last_deaths, max_dim=2, resolution=500)
+            name: compute_landscape_curves(diag, t_min=0, t_max_per_dim=global_last_deaths, max_dim=2, resolution=100000)
             for name, diag in persistence_diagrams.items()
         }
-
-        """# Save landscape plots
-        for i, mouse_name in enumerate(landscape_curves.keys()):
-            group = 'Hyper' if i < 5 else 'Control'
-            for dim in [0, 1, 2]:
-                filename = (
-                    f'fullLungGraphs/Pressure{pressure}/'
-                    f'Persistence_Landscape_{dim}_{group}_{mouse_name}_P{pressure}_fullLung'
-                )
-                t_vals, landscapes = landscape_curves[mouse_name][dim]
-                save_landscape(
-                    t_vals, landscapes, dim=dim, filename=filename,
-                    title=f'Persistence Landscape {mouse_name} Dimension {dim} Full Lung',
-                    limit=[0, global_last_deaths[dim]], dpi=150
-                )
-        """
+        
         # Accumulate results
         for name, curves in landscape_curves.items():
             full_name = name + '_p' + pressure + '_' + lobe

@@ -1,17 +1,18 @@
 close all
-Name = 'm1p1_053107';
+Name = 'm1p1_060107';
 arcs = load(strcat('Networks/Network_Vessels_',Name,'.mat'),'arcsC3');
 nodes = load(strcat('Networks/Network_Vessels_',Name,'.mat'),'nodesC2');
 arcs = arcs.arcsC3;
 nodes = nodes.nodesC2;
 % ==== USER INPUT SECTION ====
 startVessels = [
-    3954 3900; %left
-    4071 685;% superior
-    4179 4304; %middle 1
-    4018 4379; %middle 2
-    4018 4019; %inferior
-    4296 1851 %post caval
+    190 2722; %left
+    2780 2716;% superior
+    2766 2744; %middle 1
+    2992 1332; %middle 2
+    2992 2895; %inferior
+    2766 2808; %post caval
+    2780 2781
 ];
 
 colors = {'r','g','m','m','c','k','g'};  % Define up to 6 distinct colors
