@@ -298,8 +298,8 @@ all_landscape_curves = {}
 all_persistence_diagrams = {}
 
 for pressure in ['1', '2', '3', '4']:
-    #for lobe in ['left','superior','inferior','middle','postcaval']:
-    for lobe in ['superior']:
+    for lobe in ['left','superior','inferior','middle','postcaval']:
+    #for lobe in ['superior']:
         if lobe == "middle":
             if pressure == '1':
                 m1053007 = [1841, 1945, 1841, 1964]

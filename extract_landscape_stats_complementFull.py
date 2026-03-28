@@ -210,7 +210,7 @@ for pressure in ['1', '2', '3', '4']:
             global_last_deaths[dim] = max(global_last_deaths.get(dim, death), death)
 
     landscape_curves = {
-        name: compute_landscape_curves(diag, t_min=0, t_max_per_dim=global_last_deaths, max_dim=2, resolution=5000)
+        name: compute_landscape_curves(diag, t_min=0, t_max_per_dim=global_last_deaths, max_dim=2, resolution=500)
         for name, diag in persistence_diagrams.items()
     }
 
